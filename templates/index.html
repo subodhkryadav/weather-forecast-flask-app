@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>🌤️ Real-Time Weather Forecast</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 700px;
+      margin: auto;
+      padding: 20px;
+      background: #f3f7fa;
+      color: #333;
+    }
+    h1, h2, h3 {
+      color: #005b96;
+    }
+    form {
+      margin-bottom: 20px;
+    }
+    input[type="text"] {
+      padding: 8px;
+      width: 60%;
+      margin-right: 10px;
+    }
+    button {
+      padding: 8px 16px;
+      background-color: #005b96;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #003f6b;
+    }
+    .section {
+      background-color: #fff;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 6px;
+      box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+    }
+    ul {
+      padding-left: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🌤️ Weather Forecast Dashboard</h1>
+
+  <form method="POST">
+    <input type="text" name="city" placeholder="Enter city name" required>
+    <button type="submit">Get Weather</button>
+  </form>
+
+  {% if weather %}
+  <div class="section">
+    <h2>📍 {{ weather.location.name }}, {{ weather.location.region }}</h2>
+    <p><strong>🌡️ Real Temperature (API):</strong> {{ weather.current.temp_c }}°C</p>
+    <p><strong>💧 Humidity:</strong> {{ weather.current.humidity }}%</p>
+    <p><strong>🌬️ Wind Speed:</strong> {{ weather.current.wind_kph }} kph</p>
+  </div>
+
+  <div class="section">
+    <h3>📈 ML Predictions</h3>
+    <p><strong>Predicted Today:</strong> {{ today_pred }}°C</p>
+    <p><strong>Next Day:</strong> {{ next_day_pred }}°C</p>
+    <p><strong>Day After Tomorrow:</strong> {{ day_after_pred }}°C</p>
+  </div>
+
+  <div class="section">
+    <h3>📅 7-Day Forecast</h3>
+    <ul>
+      {% for day in forecast %}
+      <li>{{ day.ds }} → {{ day.yhat | round(2) }}°C</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div class="section">
+    <h3>📊 Monthly Average Temperature</h3>
+    <p>{{ month_avg }}°C</p>
+  </div>
+  {% endif %}
+
+</body>
+</html>
